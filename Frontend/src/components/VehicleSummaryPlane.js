@@ -10,8 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
-import { createStyles, makeStyles } from "@mui/styles";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import fetchVehicleSummary from "../modules/fetchVehicleSummary.js";
 import loadingImg from "../img/loading.gif";
 
@@ -21,6 +19,7 @@ const VehicleSummaryPlane = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onQuery = async (e) => {
+    // TODO: add listener of Enter key press
     if (!make) {
       alert("Please input a make"); // TODO: use a better prompt component with m-UI
       return;
@@ -45,7 +44,7 @@ const VehicleSummaryPlane = () => {
       <TableRow>
         <TableCell>
           <img
-            style={{ height: "180px" }}
+            style={{ height: "180px" }} // TODO: use material UI's own style engine
             src={loadingImg}
             alt="Loading..."
           ></img>
@@ -87,7 +86,8 @@ const VehicleSummaryPlane = () => {
   };
 
   const formContainerStyle = {
-    paddingTop: "5px",
+    // TODO: use material UI's own style engine
+    paddingTop: 4,
   };
 
   return (

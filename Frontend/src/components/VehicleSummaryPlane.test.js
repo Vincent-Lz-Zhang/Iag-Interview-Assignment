@@ -8,10 +8,12 @@ describe("VehicleSummaryPlane Component", () => {
     //debug();
     expect(getByRole("textbox")).toBeInTheDocument();
   });
+
   it("should render query button", () => {
     const { getByRole } = render(<VehicleSummaryPlane />);
     expect(getByRole("button")).toBeInTheDocument();
   });
+
   it("should render preloading gif when user types some text and hit query button", () => {
     const { getByRole, getByAltText } = render(<VehicleSummaryPlane />);
     const makeTextBox = getByRole("textbox");

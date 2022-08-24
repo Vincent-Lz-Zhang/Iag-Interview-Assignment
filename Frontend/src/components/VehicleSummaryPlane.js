@@ -10,6 +10,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
+import { createStyles, makeStyles } from "@mui/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import fetchVehicleSummary from "../modules/fetchVehicleSummary.js";
 import loadingImg from "../img/loading.gif";
 
@@ -25,18 +27,63 @@ const VehicleSummaryPlane = () => {
     } else {
       setIsLoading(true);
     }
+
     try {
       const vehicleSummaryResponse = await fetchVehicleSummary(make);
       if (vehicleSummaryResponse) {
         setVehicleSummary(vehicleSummaryResponse);
-        setIsLoading(false);
       }
     } catch (error) {
-      setIsLoading(false);
       alert(error.message); // TODO: use a better prompt with m-UI
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    setMake("");
+  const preloadingImageMarkup = (
+    <TableBody>
+      <TableRow>
+        <TableCell>
+          <img
+            style={{ height: "180px" }}
+            src={loadingImg}
+            alt="Loading..."
+          ></img>
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  );
+
+  const emptyVehicleModelGridMarkup = (
+    <TableBody>
+      <TableRow>
+        <TableCell component="th" scope="row">
+          No Model To Show
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  );
+
+  const renderVehicleModelGrid = function (models) {
+    return (
+      <TableBody>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Years Available</TableCell>
+        </TableRow>
+        {models.map((model, index) => (
+          <TableRow
+            data-cy="vehicle-model-row"
+            key={model.name + model.yearsAvailable}
+          >
+            <TableCell component="th" scope="row">
+              {model.name}
+            </TableCell>
+            <TableCell>{model.yearsAvailable}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    );
   };
 
   const formContainerStyle = {
@@ -80,45 +127,11 @@ const VehicleSummaryPlane = () => {
             </TableRow>
           </TableHead>
 
-          {isLoading ? (
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <img
-                    style={{ height: "180px" }}
-                    src={loadingImg}
-                    alt="Loading..."
-                  ></img>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          ) : vehicleSummary?.models?.length ?? 0 > 0 ? (
-            <TableBody>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Years Available</TableCell>
-              </TableRow>
-              {vehicleSummary.models.map((model, index) => (
-                <TableRow
-                  data-cy="vehicle-model-row"
-                  key={model.name + model.yearsAvailable}
-                >
-                  <TableCell component="th" scope="row">
-                    {model.name}
-                  </TableCell>
-                  <TableCell>{model.yearsAvailable}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          ) : (
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  No Model To Show
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          )}
+          {isLoading
+            ? preloadingImageMarkup
+            : vehicleSummary?.models?.length
+            ? renderVehicleModelGrid(vehicleSummary.models)
+            : emptyVehicleModelGridMarkup}
         </Table>
       </Paper>
     </div>

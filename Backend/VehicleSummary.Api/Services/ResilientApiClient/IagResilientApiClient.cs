@@ -15,12 +15,6 @@ namespace VehicleSummary.Api.Services.ResilientApiClient
     /// <summary>
     /// It performs HTTP call in a resilient manner.
     /// </summary>
-
-    /// <remarks>
-    /// It is not thread-safe. The same instance can only be used in non-concurrent way.
-    /// If you want to use it in concurrent way, 
-    /// consider having a factory injected and using it to get multiple instances.
-    /// </remarks>
     public class IagResilientApiClient : IIagResilientApiClient
     {
         private readonly VehicleApiOptions _options;

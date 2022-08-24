@@ -78,9 +78,6 @@ namespace VehicleSummary.Api
             app.Run();
         }
 
-        /// <remarks>
-        /// It is supposed to result in an extra container, which could be problematic.
-        /// </remarks>
         private static void ConfigFlurl(IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider()
